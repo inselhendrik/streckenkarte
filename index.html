@@ -1,11 +1,81 @@
-<h1>Meine Links</h1>
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Weiterleitung</title>
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: linear-gradient(135deg, #1f2937, #111827);
+      color: white;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+      opacity: 0.9;
+    }
+
+    #countdown {
+      font-size: 3rem;
+      font-weight: bold;
+      background: #10b981;
+      padding: 15px 30px;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    }
+
+    footer {
+      position: absolute;
+      bottom: 20px;
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+
+    a {
+      color: #34d399;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>Automatische Weiterleitung in:</h1>
+<div id="countdown">3000 ms</div>
+
+<footer>
+  <a rel="me" href="https://zug.network/@Baureihe218">
+    Zurück zu zug.network
+  </a>
+</footer>
 
 <script>
-  setTimeout(() => {
-    window.location.href = "https://www.bahnbubble.eu/u/Baureihe218";
-  }, 2000);
+  let timeLeft = 3000;
+  const countdownEl = document.getElementById("countdown");
+
+  const interval = setInterval(() => {
+    timeLeft -= 50;
+    countdownEl.textContent = timeLeft + " ms";
+
+    if (timeLeft <= 0) {
+      clearInterval(interval);
+      window.location.href = "https://www.bahnbubble.eu/u/Baureihe218";
+    }
+  }, 50);
 </script>
 
- <footer>
-<a rel="me" href="https://zug.network/@Baureihe218">.</a>
-  </footer>
+</body>
+</html>
