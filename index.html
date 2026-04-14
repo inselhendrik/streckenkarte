@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <title>Weiterleitung</title>
 
+<!-- GoatCounter Config (WICHTIG: vor Script!) -->
 <script>
-/* GoatCounter Konfiguration */
 window.goatcounter = {
   user_vars: {
     screen: window.innerWidth + "x" + window.innerHeight
@@ -85,68 +85,67 @@ a {
     <div class="progress-bar" id="bar"></div>
   </div>
 
-  <!-- Klick Tracking -->
   <a rel="me" href="https://zug.network/@Baureihe218"
-     onclick="goatcounter.count({path: 'click-zug-network'})">
+     onclick="if(window.goatcounter){goatcounter.count({path: 'click-zug-network'})}">
     Zurück zu zug.network
   </a>
 </div>
 
-<audio id="sound" src="bwegt.m4a"></audio>
+<!-- GoatCounter Script (vor deinem JS!) -->
+<script data-goatcounter="https://inselhendrik.goatcounter.com/count"
+        async src="https://gc.zgo.at/count.js"></script>
 
 <script>
-let timeLeft = 3;
-const el = document.getElementById("countdown");
-const bar = document.getElementById("bar");
-const audio = document.getElementById("sound");
+document.addEventListener("DOMContentLoaded", () => {
 
-/* Autoplay versuchen */
-window.addEventListener("load", () => {
-  audio.volume = 1.0;
-  audio.play().catch(() => {
-    document.body.addEventListener("click", () => {
-      audio.play();
-    }, { once: true });
-  });
-});
+  let timeLeft = 3;
+  const el = document.getElementById("countdown");
+  const bar = document.getElementById("bar");
 
-/* Herkunft tracken */
-if (document.referrer.includes("zug.network")) {
-  goatcounter.count({path: 'from-zug-network'});
-}
-
-/* First vs Return */
-if (!localStorage.getItem("visited")) {
-  goatcounter.count({path: 'first-visit'});
-  localStorage.setItem("visited", "yes");
-} else {
-  goatcounter.count({path: 'return-visit'});
-}
-
-/* Verweildauer 10s */
-setTimeout(() => {
-  goatcounter.count({path: 'stay-10s'});
-}, 10000);
-
-/* Countdown */
-const interval = setInterval(() => {
-  timeLeft--;
-  el.textContent = timeLeft;
-  bar.style.width = (timeLeft / 3 * 100) + "%";
-
-  if (timeLeft <= 0) {
-    clearInterval(interval);
-
-    goatcounter.count({path: 'auto-redirect'});
-
-    window.location.href = "https://www.bahnbubble.eu/u/Baureihe218";
+  /* Herkunft tracken */
+  if (document.referrer.includes("zug.network") && window.goatcounter) {
+    goatcounter.count({path: 'from-zug-network'});
   }
-}, 1000);
+
+  /* First vs Return */
+  if (window.goatcounter) {
+    if (!localStorage.getItem("visited")) {
+      goatcounter.count({path: 'first-visit'});
+      localStorage.setItem("visited", "yes");
+    } else {
+      goatcounter.count({path: 'return-visit'});
+    }
+  }
+
+  /* Verweildauer */
+  setTimeout(() => {
+    if (window.goatcounter) {
+      goatcounter.count({path: 'stay-10s'});
+    }
+  }, 10000);
+
+  /* Countdown */
+  const interval = setInterval(() => {
+    timeLeft--;
+    el.textContent = timeLeft;
+    bar.style.width = (timeLeft / 3 * 100) + "%";
+
+    if (timeLeft <= 0) {
+      clearInterval(interval);
+
+      if (window.goatcounter) {
+        goatcounter.count({path: 'auto-redirect'});
+      }
+
+      window.location.href = "https://www.bahnbubble.eu/u/Baureihe218";
+    }
+  }, 1000);
+
+});
 </script>
 
-<!-- GoatCounter -->
-<script data-goatcounter="https://inselhendrik.goatcounter.com/count"
-        async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
 
 </body>
 </html>
