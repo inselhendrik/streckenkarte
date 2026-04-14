@@ -4,6 +4,15 @@
 <meta charset="UTF-8">
 <title>Weiterleitung</title>
 
+<script>
+/* GoatCounter Konfiguration */
+window.goatcounter = {
+  user_vars: {
+    screen: window.innerWidth + "x" + window.innerHeight
+  }
+};
+</script>
+
 <style>
 body {
   margin: 0;
@@ -19,7 +28,6 @@ body {
   align-items: center;
 }
 
-/* BOX */
 .box {
   margin-right: 5%;
   background: rgba(255, 230, 120, 0.9);
@@ -43,7 +51,6 @@ h1 {
   color: #666;
 }
 
-/* LADEBALKEN */
 .progress {
   width: 100%;
   height: 8px;
@@ -65,10 +72,6 @@ a {
   text-decoration: none;
   font-size: 0.95rem;
 }
-
-a:hover {
-  text-decoration: underline;
-}
 </style>
 </head>
 
@@ -82,9 +85,9 @@ a:hover {
     <div class="progress-bar" id="bar"></div>
   </div>
 
-  <!-- Klick wird getrackt -->
+  <!-- Klick Tracking -->
   <a rel="me" href="https://zug.network/@Baureihe218"
-     onclick="goatcounter.count({path: 'zug-network-click'})">
+     onclick="goatcounter.count({path: 'click-zug-network'})">
     Zurück zu zug.network
   </a>
 </div>
@@ -107,7 +110,25 @@ window.addEventListener("load", () => {
   });
 });
 
-/* Countdown + Weiterleitung */
+/* Herkunft tracken */
+if (document.referrer.includes("zug.network")) {
+  goatcounter.count({path: 'from-zug-network'});
+}
+
+/* First vs Return */
+if (!localStorage.getItem("visited")) {
+  goatcounter.count({path: 'first-visit'});
+  localStorage.setItem("visited", "yes");
+} else {
+  goatcounter.count({path: 'return-visit'});
+}
+
+/* Verweildauer 10s */
+setTimeout(() => {
+  goatcounter.count({path: 'stay-10s'});
+}, 10000);
+
+/* Countdown */
 const interval = setInterval(() => {
   timeLeft--;
   el.textContent = timeLeft;
@@ -116,10 +137,7 @@ const interval = setInterval(() => {
   if (timeLeft <= 0) {
     clearInterval(interval);
 
-    /* Weiterleitung wird auch getrackt */
-    if (window.goatcounter) {
-      goatcounter.count({path: 'auto-redirect'});
-    }
+    goatcounter.count({path: 'auto-redirect'});
 
     window.location.href = "https://www.bahnbubble.eu/u/Baureihe218";
   }
