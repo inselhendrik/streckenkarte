@@ -65,6 +65,10 @@ a {
   text-decoration: none;
   font-size: 0.95rem;
 }
+
+a:hover {
+  text-decoration: underline;
+}
 </style>
 </head>
 
@@ -78,12 +82,14 @@ a {
     <div class="progress-bar" id="bar"></div>
   </div>
 
-  <a rel="me" href="https://zug.network/@Baureihe218">
+  <!-- Klick wird getrackt -->
+  <a rel="me" href="https://zug.network/@Baureihe218"
+     onclick="goatcounter.count({path: 'zug-network-click'})">
     Zurück zu zug.network
   </a>
 </div>
 
-<audio id="sound" src="bwegt.mp3"></audio>
+<audio id="sound" src="bwegt.m4a"></audio>
 
 <script>
 let timeLeft = 3;
@@ -91,17 +97,17 @@ const el = document.getElementById("countdown");
 const bar = document.getElementById("bar");
 const audio = document.getElementById("sound");
 
-/* Versuch Autoplay */
+/* Autoplay versuchen */
 window.addEventListener("load", () => {
   audio.volume = 1.0;
   audio.play().catch(() => {
-    // Fallback: erster Klick startet Sound
     document.body.addEventListener("click", () => {
       audio.play();
     }, { once: true });
   });
 });
 
+/* Countdown + Weiterleitung */
 const interval = setInterval(() => {
   timeLeft--;
   el.textContent = timeLeft;
@@ -109,11 +115,15 @@ const interval = setInterval(() => {
 
   if (timeLeft <= 0) {
     clearInterval(interval);
+
+    /* Weiterleitung wird auch getrackt */
+    if (window.goatcounter) {
+      goatcounter.count({path: 'auto-redirect'});
+    }
+
     window.location.href = "https://www.bahnbubble.eu/u/Baureihe218";
   }
 }, 1000);
-</script>
-
 </script>
 
 <!-- GoatCounter -->
@@ -122,7 +132,3 @@ const interval = setInterval(() => {
 
 </body>
 </html>
-  
-</body>
-</html>
-
