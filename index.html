@@ -4,15 +4,6 @@
 <meta charset="UTF-8">
 <title>Weiterleitung</title>
 
-<!-- GoatCounter Config -->
-<script>
-window.goatcounter = {
-  user_vars: {
-    screen: window.innerWidth + "x" + window.innerHeight
-  }
-};
-</script>
-
 <style>
 body {
   margin: 0;
@@ -66,82 +57,50 @@ h1 {
   background: #666;
   transition: width 1s linear;
 }
-
-a {
-  color: #666;
-  text-decoration: none;
-  font-size: 0.95rem;
-}
 </style>
 </head>
 
 <body>
 
 <div class="box">
-  <h1>Automatische Weiterleitung zu meiner Streckenkarte in:</h1>
+  <h1>Automatische Weiterleitung in:</h1>
   <div id="countdown">3</div>
 
   <div class="progress">
     <div class="progress-bar" id="bar"></div>
   </div>
-
-  <a rel="me" href="https://zug.network/@Baureihe218"
-     onclick="if(window.goatcounter){goatcounter.count({path: 'click-zug-network'})}">
-    Zurück zu zug.network
-  </a>
 </div>
 
-<!-- GoatCounter Script -->
+<!-- GoatCounter (optional, stört nix mehr) -->
 <script data-goatcounter="https://inselhendrik.goatcounter.com/count"
         async src="https://gc.zgo.at/count.js"></script>
 
 <script>
-document.addEventListener("DOMContentLoaded", () => {
+let timeLeft = 3;
 
-  let timeLeft = 3;
-  const el = document.getElementById("countdown");
-  const bar = document.getElementById("bar");
+const el = document.getElementById("countdown");
+const bar = document.getElementById("bar");
 
-  /* Herkunft tracken */
-  if (document.referrer.includes("zug.network") && window.goatcounter) {
-    goatcounter.count({path: 'from-zug-network'});
+/* Sichere Tracking-Funktion */
+function track(path) {
+  if (window.goatcounter && typeof goatcounter.count === "function") {
+    goatcounter.count({path: path});
   }
+}
 
-  /* First vs Return */
-  if (window.goatcounter) {
-    if (!localStorage.getItem("visited")) {
-      goatcounter.count({path: 'first-visit'});
-      localStorage.setItem("visited", "yes");
-    } else {
-      goatcounter.count({path: 'return-visit'});
-    }
+/* Countdown startet SOFORT (kein DOMContentLoaded nötig) */
+const interval = setInterval(() => {
+  timeLeft--;
+
+  el.textContent = timeLeft;
+  bar.style.width = (timeLeft / 3 * 100) + "%";
+
+  if (timeLeft <= 0) {
+    clearInterval(interval);
+    track('auto-redirect');
+    window.location.href = "https://www.bahnbubble.eu/u/Baureihe218";
   }
-
-  /* Verweildauer */
-  setTimeout(() => {
-    if (window.goatcounter) {
-      goatcounter.count({path: 'stay-10s'});
-    }
-  }, 10000);
-
-  /* Countdown */
-  const interval = setInterval(() => {
-    timeLeft--;
-    el.textContent = timeLeft;
-    bar.style.width = (timeLeft / 3 * 100) + "%";
-
-    if (timeLeft <= 0) {
-      clearInterval(interval);
-
-      if (window.goatcounter) {
-        goatcounter.count({path: 'auto-redirect'});
-      }
-
-      window.location.href = "https://www.bahnbubble.eu/u/Baureihe218";
-    }
-  }, 1000);
-
-});
+}, 1000);
 </script>
 
 </body>
